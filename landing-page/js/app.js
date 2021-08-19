@@ -17,26 +17,28 @@
  * Define Global Variables
  *
  */
-let sections = getAllSections();
+let SECTIONS;
+let ACTIVE_TAB;
+
 /**
  * End Global Variables
  * Start Helper Functions
  *
  */
-function getAllSections() {
+const getAllSections = () => {
   const sections = document.querySelectorAll("section");
   return sections;
-}
+};
 
-function navigateToSection(e){
-  e.preventDefault();
-  const eTarget = e.target;
-  if(eTarget.nodeName === 'A'){
-    const sectionID = eTarget.getAttribute('href');
-    const section = document.querySelector(sectionID);
-    section.scrollIntoView();
+const setActiveTab = (newActiveTab) => {
+  if (!ACTIVE_TAB) {
+    ACTIVE_TAB = document.querySelector(".menu__link.active ");
   }
-}
+  ACTIVE_TAB.classList.toggle("active");
+  newActiveTab.classList.toggle("active");
+  ACTIVE_TAB = newActiveTab;
+};
+
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -44,41 +46,52 @@ function navigateToSection(e){
  */
 
 // build the nav
-const navItemsList = document.querySelector("#navbar__list");
-const htmlFragment = document.createDocumentFragment();
 
-sections.forEach((section) => {
-  const navItemText = section.getAttribute("data-nav");
-  const sectionID = section.getAttribute("id");
-  const navListItem = document.createElement("li");
-  //Create anchor tag with href attribute of the corresponding section ID, allowing to scroll to the target section.
-  //To ensure smoothness in the scrolling behavior, a CSS styling rule is added in the CSS file to set 'scroll-behavior' of the html element to 'smooth'
-  navListItem.insertAdjacentHTML(
-    "afterbegin",
-    `<a href='#${sectionID}' class="menu__link">${navItemText}</a>`
+const buildNavItems = () => {
+  const navItemsList = document.querySelector("#navbar__list");
+  navItemsList.addEventListener(
+    "click",
+    (e) => {
+      navigateToSection(e);
+    },
+    false
   );
-  htmlFragment.appendChild(navListItem);
-});
-navItemsList.appendChild(htmlFragment);
+
+  const htmlFragment = document.createDocumentFragment();
+  if (!SECTIONS) {
+    SECTIONS = getAllSections();
+  }
+  SECTIONS.forEach((section) => {
+    const navItemText = section.getAttribute("data-nav");
+    const sectionID = section.getAttribute("id");
+    const navListItem = document.createElement("li");
+    //Create anchor tag with href attribute of the corresponding section ID, allowing to scroll to the target section.
+    //To ensure smoothness in the scrolling behavior, a CSS styling rule is added in the CSS file to set 'scroll-behavior' of the html element to 'smooth'
+    navListItem.insertAdjacentHTML(
+      "afterbegin",
+      `<a href='#${sectionID}'class="menu__link${
+        sectionID === "section1" ? " active" : ""
+      }">${navItemText}</a>`
+    );
+    htmlFragment.appendChild(navListItem);
+  });
+  navItemsList.appendChild(htmlFragment);
+};
+
+const navigateToSection = (e) => {
+  //Prevent the default behavior of the anchor tag and how it adds the element's ID to the URL.
+  e.preventDefault();
+  const eTarget = e.target;
+  //Since event delegation pattern is used for better performance, I must ensure that the click is on an anchor tag of one of the nav items,
+  //not the navbar itself.
+  if (eTarget.nodeName === "A") {
+    const sectionID = eTarget.getAttribute("href");
+    const section = document.querySelector(sectionID);
+    section.scrollIntoView();
+    setActiveTab(eTarget);
+  }
+};
 
 // Add class 'active' to section when near top of viewport
 
-// Scroll to anchor ID using scrollTO event
-/*Since I am using the native scrolling behavior of the anchor tag alongside CSS styling to have scroll-behavior set to smooth,
-scrolling programmatically would not be necessary.
-However, since scroll-behavior attribute is not supported on all browsers as per https://caniuse.com/?search=scroll-behavior,
-and to meet project requirements, scrolling programmatically can be implemented as found below:
- */
-navItemsList.addEventListener("click", (e) => {navigateToSection(e)}, false);
-
-/**
- * End Main Functions
- * Begin Events
- *
- */
-
-// Build menu
-
-// Scroll to section on link click
-
-// Set sections as active
+document.addEventListener("DOMContentLoaded", buildNavItems);
