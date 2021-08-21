@@ -117,6 +117,7 @@ const buildNavItems = () => {
     const navItemText = sectionElement.getAttribute("data-nav");
     const sectionID = sectionElement.getAttribute("id");
     const navListItem = document.createElement("li");
+    // Create anchor element manually using createElement instead of setting innerHTML if the li element so that I can set the anchor DOM object to the Section object.
     const anchorElement = document.createElement("a");
     anchorElement.textContent = navItemText;
     anchorElement.setAttribute("href", `#${sectionID}`);
