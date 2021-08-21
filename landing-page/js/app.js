@@ -13,13 +13,32 @@
  *
  */
 
+ class Section {
+  static activeSectionID;
+
+  sectionElement;
+  navElement;
+
+  constructor(sectionEL) {
+    this.sectionElement = sectionEL;
+  }
+
+  setActive = () => {
+    const oldActiveSection = SECTIONS.get(Section.activeSectionID);
+    oldActiveSection.sectionElement.classList.toggle("active");
+    oldActiveSection.navElement.classList.toggle("active");
+    this.sectionElement.classList.toggle("active");
+    this.navElement.classList.toggle("active");
+    Section.activeSectionID = this.sectionElement.getAttribute("id");
+  };
+}
+
 /**
  * Define Global Variables
  *
  */
+
 let SECTIONS;
-let ACTIVE_TAB;
-let ACTIVE_SECTION;
 
 /**
  * End Global Variables
@@ -28,43 +47,27 @@ let ACTIVE_SECTION;
  */
 const getAllSections = () => {
   const sections = document.querySelectorAll("section");
-  return sections;
-};
+  const sectionsMap = new Map();
+  sections.forEach((sectionElement) => {
+    const section = new Section(sectionElement);
+    const sectionID = sectionElement.getAttribute("id");
+    sectionsMap.set(sectionID, section);
+  });
 
-const setActiveTab = (newActiveTab) => {
-  if (!ACTIVE_TAB) {
-    ACTIVE_TAB = document.querySelector(".menu__link.active ");
-  }
-  ACTIVE_TAB.classList.toggle("active");
-  newActiveTab.classList.toggle("active");
-  ACTIVE_TAB = newActiveTab;
-};
+  const activeSectionID = document
+    .querySelector("section.active")
+    .getAttribute("id");
+  Section.activeSectionID = activeSectionID;
 
-const setActiveSection = (newActiveSection) => {
-  if (!ACTIVE_SECTION) {
-    ACTIVE_SECTION = document.querySelector("section.active ");
-  }
-  ACTIVE_SECTION.classList.toggle("active");
-  newActiveSection.classList.toggle("active");
-  ACTIVE_SECTION = newActiveSection;
+  return sectionsMap;
 };
 
 const isElementWithinView = (section) => {
   const sectionRect = section.getBoundingClientRect();
 
   const windowHeight = window.innerHeight;
-  const windowWidth = window.innerWidth;
 
-  if (
-    sectionRect.top >= 0 &&
-    sectionRect.bottom <= windowHeight &&
-    sectionRect.left >= 0 &&
-    sectionRect.right <= windowWidth
-  ) {
-    return true;
-  }
-
-  return false;
+  return sectionRect.top >= 0 && sectionRect.bottom * 0.7 <= windowHeight;
 };
 
 /**
@@ -77,29 +80,28 @@ const isElementWithinView = (section) => {
 
 const buildNavItems = () => {
   const navItemsList = document.querySelector("#navbar__list");
-  navItemsList.addEventListener("click", (e) => {
-    navigateToSection(e);
-  });
-
   const htmlFragment = document.createDocumentFragment();
-  if (!SECTIONS) {
-    SECTIONS = getAllSections();
-  }
   SECTIONS.forEach((section) => {
-    const navItemText = section.getAttribute("data-nav");
-    const sectionID = section.getAttribute("id");
+    sectionElement = section.sectionElement;
+    const navItemText = sectionElement.getAttribute("data-nav");
+    const sectionID = sectionElement.getAttribute("id");
     const navListItem = document.createElement("li");
-    //Create anchor tag with href attribute of the corresponding section ID, allowing to scroll to the target section.
-    //To ensure smoothness in the scrolling behavior, a CSS styling rule is added in the CSS file to set 'scroll-behavior' of the html element to 'smooth'
-    navListItem.insertAdjacentHTML(
-      "afterbegin",
-      `<a href='#${sectionID}'class="menu__link${
-        sectionID === "section1" ? " active" : ""
-      }">${navItemText}</a>`
-    );
+    const anchorElement = document.createElement("a");
+    anchorElement.textContent = navItemText;
+    anchorElement.setAttribute("href", `#${sectionID}`);
+    anchorElement.setAttribute("data-nav", sectionID);
+    anchorElement.classList.add("menu__link");
+    if (sectionID === "section1") {
+      anchorElement.classList.add("active");
+    }
+    navListItem.appendChild(anchorElement);
+    section.navElement = anchorElement;
     htmlFragment.appendChild(navListItem);
   });
   navItemsList.appendChild(htmlFragment);
+  navItemsList.addEventListener("click", (e) => {
+    navigateToSection(e);
+  });
 };
 
 const navigateToSection = (e) => {
@@ -109,23 +111,27 @@ const navigateToSection = (e) => {
   //Since event delegation pattern is used for better performance, I must ensure that the click is on an anchor tag of one of the nav items,
   //not the navbar itself.
   if (eTarget.nodeName === "A") {
-    const sectionID = eTarget.getAttribute("href");
-    const section = document.querySelector(sectionID);
-    section.scrollIntoView();
-    setActiveTab(eTarget);
+    const sectionID = eTarget.getAttribute("data-nav");
+    const section = SECTIONS.get(sectionID);
+    section.sectionElement.scrollIntoView();
   }
 };
 
 // Add class 'active' to section when near top of viewport
 
 const activateSectionInView = () => {
-  for (const section of SECTIONS) {
-    if (isElementWithinView(section)) {
-      setActiveSection(section);
+  for (const section of SECTIONS.values()) {
+    if (isElementWithinView(section.sectionElement)) {
+      section.setActive();
       break;
     }
   }
 };
 
-document.addEventListener("DOMContentLoaded", buildNavItems);
+const loadInitialContent = () => {
+  SECTIONS = getAllSections();
+  buildNavItems();
+};
+
+document.addEventListener("DOMContentLoaded", loadInitialContent);
 document.addEventListener("scroll", activateSectionInView);
