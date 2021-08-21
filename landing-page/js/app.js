@@ -19,6 +19,7 @@
  */
 let SECTIONS;
 let ACTIVE_TAB;
+let ACTIVE_SECTION;
 
 /**
  * End Global Variables
@@ -39,6 +40,33 @@ const setActiveTab = (newActiveTab) => {
   ACTIVE_TAB = newActiveTab;
 };
 
+const setActiveSection = (newActiveSection) => {
+  if (!ACTIVE_SECTION) {
+    ACTIVE_SECTION = document.querySelector("section.active ");
+  }
+  ACTIVE_SECTION.classList.toggle("active");
+  newActiveSection.classList.toggle("active");
+  ACTIVE_SECTION = newActiveSection;
+};
+
+const isElementWithinView = (section) => {
+  const sectionRect = section.getBoundingClientRect();
+
+  const windowHeight = window.innerHeight;
+  const windowWidth = window.innerWidth;
+
+  if (
+    sectionRect.top >= 0 &&
+    sectionRect.bottom <= windowHeight &&
+    sectionRect.left >= 0 &&
+    sectionRect.right <= windowWidth
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -49,13 +77,9 @@ const setActiveTab = (newActiveTab) => {
 
 const buildNavItems = () => {
   const navItemsList = document.querySelector("#navbar__list");
-  navItemsList.addEventListener(
-    "click",
-    (e) => {
-      navigateToSection(e);
-    },
-    false
-  );
+  navItemsList.addEventListener("click", (e) => {
+    navigateToSection(e);
+  });
 
   const htmlFragment = document.createDocumentFragment();
   if (!SECTIONS) {
@@ -94,4 +118,14 @@ const navigateToSection = (e) => {
 
 // Add class 'active' to section when near top of viewport
 
+const activateSectionInView = () => {
+  for (const section of SECTIONS) {
+    if (isElementWithinView(section)) {
+      setActiveSection(section);
+      break;
+    }
+  }
+};
+
 document.addEventListener("DOMContentLoaded", buildNavItems);
+document.addEventListener("scroll", activateSectionInView);
