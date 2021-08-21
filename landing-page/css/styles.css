@@ -9,10 +9,6 @@
 */
 
 /* ---- Base Rules ---- */
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: rgb(136, 203, 171);
   background: linear-gradient(
@@ -64,6 +60,38 @@ main {
 section {
   position: relative;
   min-height: 80vh;
+}
+
+#scroll-top {
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  height: 125px;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border-radius: 62px;
+  position: fixed;
+  bottom: 4%;
+  right: 4%;
+  z-index: 50;
+}
+
+#scroll-top:hover {
+  cursor: pointer;
+  background-color: rgb(230, 230, 230);
+}
+
+.hidden {
+  display: none;
+}
+
+.shown {
+  display: flex;
+}
+
+.material-icons.arrow {
+  font-size: 50px;
+  font-weight: bold;
 }
 
 /* ---- Module Rules ---- */

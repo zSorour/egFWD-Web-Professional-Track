@@ -13,7 +13,7 @@
  *
  */
 
- class Section {
+class Section {
   static activeSectionID;
 
   sectionElement;
@@ -113,7 +113,7 @@ const navigateToSection = (e) => {
   if (eTarget.nodeName === "A") {
     const sectionID = eTarget.getAttribute("data-nav");
     const section = SECTIONS.get(sectionID);
-    section.sectionElement.scrollIntoView();
+    section.sectionElement.scrollIntoView({ behavior: "smooth" });
   }
 };
 
@@ -128,10 +128,32 @@ const activateSectionInView = () => {
   }
 };
 
+const showScrollTopButton = () => {
+  const currentScrollOffset = document.body.scrollTop;
+  const scrollTopButton = document.querySelector("#scroll-top");
+
+  if (currentScrollOffset >= 800) {
+    scrollTopButton.classList.remove("hidden");
+    scrollTopButton.classList.add("shown");
+  } else {
+    scrollTopButton.classList.remove("shown");
+    scrollTopButton.classList.add("hidden");
+  }
+};
+
 const loadInitialContent = () => {
   SECTIONS = getAllSections();
+  const scrollTopButton = document.querySelector("#scroll-top");
+  scrollTopButton.addEventListener("click", () => {
+    scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  });
   buildNavItems();
 };
 
 document.addEventListener("DOMContentLoaded", loadInitialContent);
 document.addEventListener("scroll", activateSectionInView);
+document.addEventListener("scroll", showScrollTopButton);
