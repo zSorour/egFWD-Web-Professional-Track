@@ -15,7 +15,7 @@
 The project is implemented as the first assessmenet of the [Udacity](https://www.udacity.com/) Front End Nanodegree offerred in collaboration with [ITIDA](https://itida.gov.eg/English/Pages/default.aspx) and [egFWD](https://egfwd.com/) as a free scholarship.
 The focus of the project is to practise JS and DOM operations, and how content is created and modified dynamically from within JavaScript.
 
-The development approach takes was to minimize the amount of DOM traversals required throughout the running of the website for better performance. This have been achieved by using specific global variables when suitable for use cases such as extensive and repetitive even occurrences such as the scrolling event. Additionally, to ensure that most of the operations are optimized, a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) data structure has been used to ensure that certain access operations take constant time **Complexity of O(1)**.
+The development approach takes was to minimize the amount of DOM traversals required throughout the running of the website for better performance. This have been achieved by using specific global variables when suitable for use cases such as extensive and repetitive event occurrences such as the scrolling event. Additionally, to ensure that most of the operations are optimized, a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) data structure has been used to ensure that certain access operations take constant time **Complexity of O(1)**.
 
 ## Author
 
