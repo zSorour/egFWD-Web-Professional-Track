@@ -93,7 +93,7 @@ const isElementWithinView = (section) => {
   const windowHeight = window.innerHeight;
   //I use sectionRect.bottom * 0.65 to ensure that if about 65% of the section is displayed within the screen, then it is sufficient to make it active.
   //This overcomes the issue I faced on smaller viewports where the section was always greater than the viewport itself.
-  return sectionRect.top >= 0 && sectionRect.bottom * 0.65 <= windowHeight;
+  return sectionRect.top >= 0 && sectionRect.bottom * 0.75 <= windowHeight;
 };
 
 // Show navbar by adding and removing 'shown' and 'hidden' CSS classes, respectively.
@@ -104,8 +104,8 @@ const showNavbar = () => {
 
 // Hide navbar by adding and removing 'hidden' and 'shown' CSS classes, respectively.
 const hideNavbar = () => {
-  nabvar.classList.add("hidden");
-  nabvar.classList.remove("shown");
+  NAVBAR.classList.add("hidden");
+  NAVBAR.classList.remove("shown");
 };
 
 // Build the navbar dynamically. The function is called when the DOM content is loaded.
@@ -180,7 +180,7 @@ const showScrollTopButton = () => {
 };
 
 //Hide the navbar when the user is scrolling
-const hideNavbar = () => {
+const scrollNavbarHandler = () => {
   hideNavbar();
   CURRENT_SCROLL_OFFSET = document.body.scrollTop;
   SCROLL_TIMEOUT = setTimeout(() => {
@@ -218,4 +218,4 @@ const loadInitialContent = () => {
 document.addEventListener("DOMContentLoaded", loadInitialContent);
 document.addEventListener("scroll", activateSectionInView);
 document.addEventListener("scroll", showScrollTopButton);
-document.addEventListener("scroll", hideNavbar);
+document.addEventListener("scroll", scrollNavbarHandler);
