@@ -1,111 +1,132 @@
-body{
-    background: #fffff8;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+body {
+  background: #fffff8;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-#app{
-    display: grid;
-    grid-auto-rows: minmax(150px, auto);
-    /* grid-template-columns:  */
-    height:100vh;
-    background: #f23557;
-    color: #f0d43a;
-    justify-content: center;
-    grid-gap: 1em;
-    font-size: 20px;
-    font-family: 'Oswald', sans-serif;
+#app {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("");
 }
 
-.holder{
-
+#app .headline {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px;
+  background-color: purple;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
 }
 
-.entry{
-    background: rgba(59, 74, 107, .4);
+.holder {
+  margin: 20px 0;
+  text-align: center;
 }
 
-#entryHolder{
-
+.entry {
+  width: 100%;
+  background-color: black;
+  color: white;
 }
 
-#date{
-
+.title {
+  padding: 20px;
 }
 
-#temp{
-
+#entryHolder {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: purple;
+  height: 200px;
 }
 
-#content{
-
-}
-
-.headline {
-
-}
-.title{
-
+#date,
+#temp,
+#content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.534);
+  color: white;
+  width: 150px;
+  height: 150px;
+  border-radius: 50px;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
-label{
-    display:block;
-    font-size: 27px;
+label {
+  display: block;
+  font-size: 27px;
+  margin: 10px;
 }
 
-input{
-    display:block;
-    height: 60px;
-    width: 320px;
-    background:#22b2da;
-    color: #f0d43a;
-    font-size: 20px;
-    font-family: 'Oswald', sans-serif;
-    border: none;
+input {
+  display: block;
+  width: 320px;
+  background: #1ca2c7;
+  color: white;
+  font-size: 20px;
+  font-family: "Oswald", sans-serif;
+  border: none;
+  border-radius: 25px;
+  padding: 20px;
+  margin: 30px;
 }
 
-button{
-    width: 400px;
-    height: 100px;
-    background: #3b4a6b;
-    color: #f0d43a;
-    font-size: 26px;
-    font-family: 'Oswald', sans-serif;
-    border: none;
-    box-shadow: 2px 4px 5px #444;
+button {
+  width: 400px;
+  height: 80px;
+  background: #3b4a6b;
+  color: white;
+  font-size: 26px;
+  font-family: "Oswald", sans-serif;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 2px 4px 5px #444;
 }
-h1{
-    font-size: 36px;
+h1 {
+  font-size: 36px;
 }
 
-textarea{
-    background:#22b2da;
-    color: #f0d43a;
-    font-size: 20px;
-    font-family: 'Oswald', sans-serif;
+textarea {
+  background: #1ca2c7;
+  color: white;
+  font-size: 20px;
+  font-family: "Oswald", sans-serif;
+  border-radius: 25px;
+  padding: 20px;
 }
 /* Reset style for HTML element on active to have no border*/
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+  outline: none;
 }
 /* Style for Placeholder Text*/
-::placeholder { /* Firefox, Chrome, Opera */ 
-    color: #f0d43a; 
-    font-family: 'Oswald', sans-serif;
+::placeholder {
+  /* Firefox, Chrome, Opera */
+  color: white;
+  font-family: "Oswald", sans-serif;
+}
 
-} 
-  
-:-ms-input-placeholder { /* Internet Explorer 10-11 */ 
-    color: #f0d43a; 
-    font-family: 'Oswald', sans-serif;
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white;
+  font-family: "Oswald", sans-serif;
+}
 
-} 
-  
-::-ms-input-placeholder { /* Microsoft Edge */ 
-    color: #f0d43a; 
-    font-family: 'Oswald', sans-serif;
-
-} 
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: white;
+  font-family: "Oswald", sans-serif;
+}
