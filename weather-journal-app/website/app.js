@@ -28,6 +28,7 @@ const validateInputs = (zip, feelings) => {
   return true;
 };
 
+// An asynchronus function that sends an HTTP GET request to OpenWeatherMap API to fetch the current temperature of a location given a zip code.
 const fetchWeatherTemp = async (baseURL, zip, apiKey) => {
   const url = `${baseURL}?zip=${zip}&appid=${apiKey}`;
   try {
@@ -44,6 +45,7 @@ const fetchWeatherTemp = async (baseURL, zip, apiKey) => {
   }
 };
 
+// An asynchronus function that sends an HTTP POST request to the node server to update the latest entry there.
 const postWeatherData = async (url, data) => {
   const response = fetch(url, {
     method: "POST",
@@ -56,6 +58,7 @@ const postWeatherData = async (url, data) => {
   return response;
 };
 
+// An asynchronus function that feteches the latest entry from the node server API and updates the page content accordingly.
 const updateEntry = async (url) => {
   const response = await fetch(url);
   const data = response.json().then((data) => {
@@ -66,6 +69,7 @@ const updateEntry = async (url) => {
   });
 };
 
+// onClick event handler for clicking the generate button.
 const onClickHandler = () => {
   const zipCode = document.querySelector("#zip").value;
   const feelings = document.querySelector("#feelings").value;
